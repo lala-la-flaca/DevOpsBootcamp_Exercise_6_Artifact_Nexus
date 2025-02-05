@@ -8,7 +8,7 @@ This exercise, it is part of the Module 6 Exercise guide: Artifact Repository Ma
 - <b>Digital Ocean: Cloud provider for hosting Nexus Repository.</b>
 - <b>Nexus: Artifact repository manager.</b>
 - <b>Linux: Ubuntu for Server configuration and management.</b>
-- <b>NodeJS/NPM: Nana's application and package manager.</b>
+- <b>NodeJS / NPM: Nana's application and package manager.</b>
 
 ## 🎯 Features
 

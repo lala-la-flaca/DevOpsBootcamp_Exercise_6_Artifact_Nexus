@@ -73,7 +73,7 @@ This exercise, it is part of the Module 6 Exercise guide: Artifact Repository Ma
 
    <img src=""/>
    
-3. Encode the username and password in Base64 format.
+2. Encode the username and password in Base64 format.
 
    Example: If your username is admin and password is admin123, run:
 
@@ -83,7 +83,7 @@ This exercise, it is part of the Module 6 Exercise guide: Artifact Repository Ma
   
   Output: YWRtaW46YWRtaW4xMjM= 
   
-4. Add the credentials to the ~/.npmrc file.
+3. Add the credentials to the ~/.npmrc file.
 
    ```bash
     registry=http://157.230.56.153:8081/repository/npmHosted/
@@ -93,13 +93,13 @@ This exercise, it is part of the Module 6 Exercise guide: Artifact Repository Ma
    ```
   <img src=""/>
 
- 5. Verify that the credentials are working properly.
+ 4. Verify that the credentials are working properly.
 
    ```bash
    npm whoami --registry=http://157.230.56.153:8081/repository/npmHosted/
    ```
    
-6. Publish the artifact to the Nexus repository.
+5. Publish the artifact to the Nexus repository.
 
    ```bash
    npm publish --registry=http://157.230.56.153:8081/repository/npmHosted/
@@ -107,7 +107,7 @@ This exercise, it is part of the Module 6 Exercise guide: Artifact Repository Ma
    
    <img src=""/>
 
- 7. Verify that the artifact is available in the Nexus repository.
+ 6. Verify that the artifact is available in the Nexus repository.
   
     <img src=""/>
 
@@ -169,8 +169,8 @@ This exercise, it is part of the Module 6 Exercise guide: Artifact Repository Ma
     ```bash
     adduser team1team2
    ```
-3. Create the .ssh directory and add the public key to grant the new user access to the droplet.
-4. Access the droplet using the new user account.
+2. Create the .ssh directory and add the public key to grant the new user access to the droplet.
+3. Access the droplet using the new user account.
 
    ```bash
     ssh team1team2@157.230.56.153
@@ -178,7 +178,7 @@ This exercise, it is part of the Module 6 Exercise guide: Artifact Repository Ma
 
    <img src=""/>
    
-6. Use the Nexus REST API to retrieve the download URL for the Node.js artifact.
+4. Use the Nexus REST API to retrieve the download URL for the Node.js artifact.
 
     ```bash
     curl -u <username:password> -X GET 'http://157.230.56.153:8081/service/rest/v1/components?repository=npmHosted&sort=version'
@@ -186,7 +186,7 @@ This exercise, it is part of the Module 6 Exercise guide: Artifact Repository Ma
 
    <img src=""/>
    
-8. Download the artifact using the URL obtained in the previous step.
+5. Download the artifact using the URL obtained in the previous step.
 
     ```bash
     wget --user <XXX> --password <XXX> http://157.230.56.153:8081/repository/npmHosted/bootcamp-node-project/-/bootcamp-node-project-1.0.0.tgz
@@ -194,7 +194,7 @@ This exercise, it is part of the Module 6 Exercise guide: Artifact Repository Ma
 
    <img src=""/>
    
-10. Untar the artifact.
+6. Untar the artifact.
 
     ```bash
     tar -xvf bootcamp-node-project-1.0.0.tgz
@@ -202,7 +202,7 @@ This exercise, it is part of the Module 6 Exercise guide: Artifact Repository Ma
 
    <img src=""/>
     
-12. Update the package manager to ensure it has the latest version.
+7. Update the package manager to ensure it has the latest version.
 
     ```bash
     apt update
@@ -210,7 +210,7 @@ This exercise, it is part of the Module 6 Exercise guide: Artifact Repository Ma
 
     <img src=""/>
     
-14. Naviagte to the package directory and install dependencies with npm install command.
+8. Navigate to the package directory and install dependencies with npm install command.
 
     ```bash
     cd package
@@ -219,14 +219,14 @@ This exercise, it is part of the Module 6 Exercise guide: Artifact Repository Ma
 
     <img src=""/>
     
-16. Run the application on the server.
+9. Run the application on the server.
 
     ```bash
     node server.js &
     ```
     <img src=""/>
     
-18. Modify the droplet firewall to open the necessary ports to access the application.
+10. Modify the droplet firewall to open the necessary ports to access the application.
 
     <img src=""/>
 
@@ -241,7 +241,7 @@ This exercise, it is part of the Module 6 Exercise guide: Artifact Repository Ma
 6. Download the artifact from the Nexus repository.
 7.  Untar the artifact.
 8.  Navigate to package.
-9.  Update package manager.
+9.  Update the package manager.
 10.  Install dependencies.
 11.  Run the application on the server.
 
@@ -252,10 +252,10 @@ curl -u team1:team1 -X GET 'http://157.230.56.153:8081/service/rest/v1/component
 #Getting the DownloadURL from the artifact.json file previously saved using 'jq' json processor tool.
 artifactDownloadUrl=$(jq '.items[].assets[].downloadUrl' artifact.json --raw-output)
 
-#Downloading the artifact using the URL link obtained from the artifact.json file.
+# Downloading the artifact using the URL link obtained from the artifact.json file.
 wget --user team1 --password team1 $artifactDownloadUrl
 
-#Extracting tarfile from the URL link using cut and delimter /
+#Extracting tarfile from the URL link using cut and delimiter /
 tarFile=$(echo $artifactDownloadUrl | cut -d '/' -f 8)  
 
 echo

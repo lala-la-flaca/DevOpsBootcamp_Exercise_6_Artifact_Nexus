@@ -9,38 +9,46 @@ This exercise, it is part of the Module 6 Exercise guide: Artifact Repository Ma
 - <b>Nexus: Artifact repository manager.</b>
 - <b>Linux: Ubuntu for Server configuration and management.</b>
 - <b>NodeJS / NPM: Nana's application and package manager.</b>
+- <b>Java / Gradle: Nana's application and build tool.</b>
+
 
 ## 🎯 Features
 
 - <b>Setup a droplet on Digital Ocean with security best practices.</b>
 - <b>Setup **Nexus Repository Manager** on Digital ocean.</b>
 - <b>Create a BlobStore.</b>
-- <b>Setup users and roles to access Nexus.</b>
-- <b>Deploy NodeJS artifact to Nexus.</b>
+- <b>Setup users (Team1 and Team2) and roles to access Nexus.</b>
+- <b>Push NodeJS artifact to Nexus in an npm-hosted repository using user 1.</b>
+- <b>Push the JAR artifact to Nexus in a new maven-hosted repository using user 2.</b>
+- <b>Download the artifact from Nexus and start the application on the droplet using a new user who has access to Nexus and the droplet.<b>
+- <b>Automation on the droplet.<b>
 
-  
 
 ## 🏗 Project Architecture
+
 <img src=""/>
+
 
 ## ⚙️ Project Configuration:
 
 ### Creating a Droplet on Digital Ocean and Installing Nexus
 1. Use the Nexus server installed during Demo 6.
 
+
 ### Creating a npm-hosted repository with a new blob store
 
-1. From the left panel, select Blob Store, and select Create New Blob Store.
+1. Select Blob Store, then click  Create New Blob Store.
 2. Choose File as the file type.
 3. Enter a name for the Blob store.
 4. Verify the default path and save.
 
    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_Exercise_6_Artifact_Nexus/blob/main/ImgEx/npmBlobStore1.png"/> 
 
-6. From the left panel, select Repository, then click Create an NPM-hosted repository.
+6. Select Repository, then click Create an NPM-hosted repository.
 7. Assign the previously created blob store to the repository.
 
    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_Exercise_6_Artifact_Nexus/blob/main/ImgEx/npmRepo.png"/> 
+
 
 ### Creating a Nexus User for Team1 & Role
 
@@ -62,6 +70,7 @@ This exercise, it is part of the Module 6 Exercise guide: Artifact Repository Ma
 8. Assign the role to the user.
 
    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_Exercise_6_Artifact_Nexus/blob/main/ImgEx/Assigning%20Role%20to%20Team1.png"/>
+
 
 ### Building and Publishing npm tar file in Nexus
 
@@ -112,6 +121,7 @@ This exercise, it is part of the Module 6 Exercise guide: Artifact Repository Ma
 
      <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_Exercise_6_Artifact_Nexus/blob/main/ImgEx/NewMavenRepo.png"/>
 
+
 ### Creating a New Nexus User for Team 2 and Role
 
 1. From the left panel in the Nexus WebUI, select Users, then click Create local user.
@@ -149,6 +159,7 @@ This exercise, it is part of the Module 6 Exercise guide: Artifact Repository Ma
 5. Verify that the JAR file has been successfully uploaded to Nexus.
 
    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_Exercise_6_Artifact_Nexus/blob/main/ImgEx/MyappPublishedNexus.png"/>
+
 
 ### Downloading Artifact from Nexus and Starting application on Droplet.
 
@@ -216,9 +227,10 @@ This exercise, it is part of the Module 6 Exercise guide: Artifact Repository Ma
 
 
 ### Automation on the droplet.
+
 1. Create a file for the script.
 2. Add the rights to execute.   
-3. Make a HTTP request to get the download URL and save it in a JSON file.
+3. Make an HTTP request to get the download URL and save the output in a JSON file.
 
    ```bash
     curl -u team1:team1 -X GET 'http://157.230.56.153:8081/service/rest/v1/components?repository=npmHosted&sort=version' | jq "." > artifact.json
@@ -236,7 +248,7 @@ This exercise, it is part of the Module 6 Exercise guide: Artifact Repository Ma
     wget --user <XXX> --password <XXX> $artifactDownloadUrl
     ```
    
-6. Extract the name of the tar file from the URL
+6. Extract the name of the tar file from the URL.
 
     ```bash
     tarFile=$(echo $artifactDownloadUrl | cut -d '/' -f 8) 

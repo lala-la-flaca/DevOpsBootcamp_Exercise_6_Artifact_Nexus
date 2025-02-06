@@ -2,6 +2,9 @@
 ## Description
 This exercise, it is part of the Module 6 Exercise guide: Artifact Repository Manager with Nexus from Nana DevOps Bootcamp. It shows how to set up a Nexus Repository Manager to centralize and manage application artifacts for multiple teams. The goal is to ensure teams can store, access, and retrieve artifacts.
 <br />
+[NodeJS](https://github.com/lala-la-flaca/DevOpsBootcamp_Exercise_5_Cloud-IaaS)
+
+[JavaGradle](https://github.com/lala-la-flaca/DevOpsBootcamp_5_deploy-java-app-digitalocean)
 
 ## 🚀 Technologies Used
 
@@ -26,7 +29,7 @@ This exercise, it is part of the Module 6 Exercise guide: Artifact Repository Ma
 
 ## 🏗 Project Architecture
 
-<img src=""/>
+<img src="https://github.com/lala-la-flaca/DevOpsBootcamp_Exercise_6_Artifact_Nexus/blob/main/ImgEx/Architecture.png"/>
 
 
 ## ⚙️ Project Configuration:

@@ -34,15 +34,16 @@ This exercise, it is part of the Module 6 Exercise guide: Artifact Repository Ma
 2. Choose File as the file type.
 3. Enter a name for the Blob store.
 4. Verify the default path and save.
-   
-    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_Exercise_6_Artifact_Nexus/blob/main/ImgEx/npmBlobStore1.png"/> 
 
-5. From the left panel, select Repository, then click Create an NPM-hosted repository.
-6. Assign the previously created blob store to the repository.
+   <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_Exercise_6_Artifact_Nexus/blob/main/ImgEx/npmBlobStore1.png"/> 
+
+6. From the left panel, select Repository, then click Create an NPM-hosted repository.
+7. Assign the previously created blob store to the repository.
 
    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_Exercise_6_Artifact_Nexus/blob/main/ImgEx/npmRepo.png"/> 
 
 ### Creating a Nexus User for Team1 & Role
+
 1. From the left panel in the Nexus WebUI, select Users, then click Create local user.
 2. Enter the name and details for team 1.
 
@@ -56,7 +57,7 @@ This exercise, it is part of the Module 6 Exercise guide: Artifact Repository Ma
       
 7. Click on Modify Applied Privileges and assign the least privileges to follow best practices.
 
-   <img src=""/>
+   <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_Exercise_6_Artifact_Nexus/blob/main/ImgEx/npmprivileges.png"/>
   
 8. Assign the role to the user.
 
@@ -90,24 +91,23 @@ This exercise, it is part of the Module 6 Exercise guide: Artifact Repository Ma
 
  4. Verify that the credentials are working properly.
 
-   ```bash
-   npm whoami --registry=http://157.230.56.153:8081/repository/npmHosted/
-   ```
+    ```bash
+      npm whoami --registry=http://157.230.56.153:8081/repository/npmHosted/
+    ```
    
-5. Publish the artifact to the Nexus repository.
+6. Publish the artifact to the Nexus repository.
 
    ```bash
    npm publish --registry=http://157.230.56.153:8081/repository/npmHosted/
    ```
-   
-   <img src=""/>
 
- 6. Verify that the artifact is available in the Nexus repository.
+ 7. Verify that the artifact is available in the Nexus repository.
   
     <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_Exercise_6_Artifact_Nexus/blob/main/ImgEx/Artifact%20in%20Nexus%20repo.png"/>
 
 
 ### Creating a New Maven-Hosted Repository
+
   1. Create a New Maven-hosted Repository and ensure that the version policy aligns with the version of your app. In this example snapshot.
 
      <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_Exercise_6_Artifact_Nexus/blob/main/ImgEx/NewMavenRepo.png"/>
@@ -145,17 +145,19 @@ This exercise, it is part of the Module 6 Exercise guide: Artifact Repository Ma
     ```bash
     gradle publish
    ```
+    
 5. Verify that the JAR file has been successfully uploaded to Nexus.
 
    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_Exercise_6_Artifact_Nexus/blob/main/ImgEx/MyappPublishedNexus.png"/>
 
-### Downloading Artifact from Nexus and Starting application.
+### Downloading Artifact from Nexus and Starting application on Droplet.
 
 1. Create a new user on the droplet server to access both repositories.
 
     ```bash
     adduser team1team2
    ```
+    
 2. Create the .ssh directory and add the public key to grant the new user access to the droplet.
 3. Access the droplet using the new user account.
 
@@ -197,6 +199,7 @@ This exercise, it is part of the Module 6 Exercise guide: Artifact Repository Ma
     cd package
     npm install
     ```
+    
     <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_Exercise_6_Artifact_Nexus/blob/main/ImgEx/InstalllingDependencies.png"/>
     
 9. Run the application on the server.
@@ -204,24 +207,75 @@ This exercise, it is part of the Module 6 Exercise guide: Artifact Repository Ma
     ```bash
     node server.js &
     ```
+    
     <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_Exercise_6_Artifact_Nexus/blob/main/ImgEx/runningNodeJsAppOnDroplet.png"/>
     
 10. Modify the droplet firewall to open the necessary ports to access the application.
 
-
+    <img src="https://github.com/lala-la-flaca/DevOpsBootcamp_Exercise_6_Artifact_Nexus/blob/main/ImgEx/NodeJsAppRunningOnNexusDroplet.png?raw=true"/>
 
 
 ### Automation on the droplet.
-1. Create a file for the script.   
+1. Create a file for the script.
 2. Add the rights to execute.   
-3. Save the artifact details in a JSON file.
+3. Make a HTTP request to get the download URL and save it in a JSON file.
+
+   ```bash
+    curl -u team1:team1 -X GET 'http://157.230.56.153:8081/service/rest/v1/components?repository=npmHosted&sort=version' | jq "." > artifact.json
+    ```
+   
 4. Grab the download URL from the JSON file.
-5. Extract the name of the tar file from the JSON file.
-6. Download the artifact from the Nexus repository.
-7.  Untar the artifact.
-8.  Navigate to package.
-9.  Update the package manager.
-10.  Install dependencies.
-11.  Run the application on the server.
+
+   ```bash
+    artifactDownloadUrl=$(jq '.items[].assets[].downloadUrl' artifact.json --raw-output)
+    ```
+
+5. Download the artifact from the Nexus repository using the URL obtained in the previous step.
+
+   ```bash
+    wget --user <XXX> --password <XXX> $artifactDownloadUrl
+    ```
+   
+6. Extract the name of the tar file from the URL
+
+    ```bash
+    tarFile=$(echo $artifactDownloadUrl | cut -d '/' -f 8) 
+    ```
+  
+7. Untar the artifact.
+
+    ```bash
+    tar -xvf $tarFile
+    ```
+    
+8. Navigate to package.
+
+    ```bash
+    cd ~/package
+    ```
+    
+9. Update the package manager.
+
+    ```bash
+    apt update
+    ```
+    
+10. Install dependencies.
+
+    ```bash
+    echo
+    echo "Installing dependencies: "
+    echo
+    npm install
+    ```
+    
+11. Run the application on the server.
+    
+    ```bash
+    echo
+    echo "Starting the App: "
+    echo
+    node server.js &
+    ```
 
 
